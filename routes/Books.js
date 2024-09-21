@@ -1,0 +1,22 @@
+const express = require('express');
+const router = express.Router();
+const User = require('../models/User');
+
+router.post('/like', async (req, res) => {
+  const { token, book } = req.body;
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const user = await User.findById(decoded.id);
+
+    user.likedBooks.push(book);
+    await user.save();
+
+    res.json({ msg: 'Book liked successfully', likedBooks: user.likedBooks });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server error');
+  }
+});
+
+module.exports = router;
