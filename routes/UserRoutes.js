@@ -1,3 +1,7 @@
+const express = require('express');
+const router = express.Router();
+const User = require('../models/User');
+
 router.get('/likedBooks', async (req, res) => {
     const token = req.header('x-auth-token');
   
@@ -13,4 +17,5 @@ router.get('/likedBooks', async (req, res) => {
       res.status(500).send('Server error');
     }
   });
-  
+
+module.exports = router
