@@ -33,6 +33,7 @@ router.post('/signup', async (req, res) => {
       }      
   });
   
+console.log('this')
 
 router.post('/login', async (req, res) => {
   const { email, password } = req.body;

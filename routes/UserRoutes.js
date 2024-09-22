@@ -18,4 +18,20 @@ router.get('/likedBooks', async (req, res) => {
     }
   });
 
+  router.post('/preferences', async (req, res) => {
+    const { token, preferences } = req.body;
+  
+    try {
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      const user = await User.findById(decoded.id);
+  
+      user.preferences.push(preferences);
+      await user.save();
+    
+    } catch (err) {
+      console.error('Error saving preferences:', err);
+      res.status(500).send('Server error');
+    }
+  });
+
 module.exports = router
