@@ -1,3 +1,4 @@
+const Cerebras = require('@cerebras/cerebras_cloud_sdk');
 const express = require('express');
 const router = express.Router();
 const { OpenAI } = require('openai');
@@ -33,6 +34,32 @@ router.post('/analyze', async (req, res) => {
     res.json({ inferredInterests });
   } catch (err) {
     console.error('Error analyzing books:', err);
+    res.status(500).send('Server error');
+  }
+});
+
+router.post('/summary', async (req, res) => {
+  const { title } = req.body;
+
+  try {
+    if (!title) {
+      return res.status(400).json({ msg: 'No book title provided.' });
+    }
+
+    const client = new Cerebras({
+      apiKey: process.env.CEREBRAS_API_KEY, // This is the default and can be omitted
+    });
+    const completionCreateResponse = await client.chat.completions.create({
+      messages: [
+        { role: 'system', content: 'You are a literary analyst.' },
+        { role: 'user', content: `In two to three sentences, give an overview on ${title} for someone who knows nothing about the book but doesn't want any spoilers.` }
+      ],
+      model: 'llama3.1-8b',
+    });
+    const summary = completionCreateResponse.choices[0].message.content.trim();
+    res.json({ summary : summary });
+  } catch (err) {
+    console.error('Error generating summary:', err);
     res.status(500).send('Server error');
   }
 });
