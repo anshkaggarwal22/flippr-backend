@@ -20,4 +20,23 @@ router.post('/like', async (req, res) => {
   }
 });
 
+// GET request to retrieve liked books
+router.get('/like', async (req, res) => {
+  const token = req.header('x-auth-token');
+  console.log(token)
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const user = await User.findById(decoded.id);
+
+    if (!user) {
+      return res.status(404).json({ msg: 'User not found' });
+    }
+
+    res.json({ likedBooks: user.likedBooks });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server error');
+  }
+});
+
 module.exports = router;

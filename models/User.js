@@ -10,6 +10,10 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  likedBooks: {
+    type: [String], // or whatever type you expect (e.g., String for book URLs)
+    default: [], // Set default to an empty array
+  },
 });
 
 module.exports = mongoose.model('User', UserSchema);
