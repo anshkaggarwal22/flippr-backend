@@ -3,6 +3,7 @@ const router = express.Router();
 const User = require('../models/User');
 const jwt = require('jsonwebtoken');
 
+// liked books get added and saved
 router.post('/like', async (req, res) => {
   const { token, book } = req.body;
 

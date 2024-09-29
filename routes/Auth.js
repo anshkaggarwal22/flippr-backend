@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 const router = express.Router();
 
+// Signup a user and create a new user
 router.post('/signup', async (req, res) => {
     const { email, password } = req.body;
   
@@ -35,6 +36,7 @@ router.post('/signup', async (req, res) => {
   
 console.log('this')
 
+// checks if the user is in the database
 router.post('/login', async (req, res) => {
   const { email, password } = req.body;
 

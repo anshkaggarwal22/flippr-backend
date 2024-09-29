@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const User = require('../models/User');
 
+// Get the liked books of the user
 router.get('/likedBooks', async (req, res) => {
     const token = req.header('x-auth-token');
   
@@ -18,6 +19,7 @@ router.get('/likedBooks', async (req, res) => {
     }
   });
 
+  // Add the preferences of the user
   router.post('/preferences', async (req, res) => {
     const { token, preferences } = req.body;
   
